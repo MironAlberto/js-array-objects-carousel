@@ -29,12 +29,15 @@ const images = [
 ];
 
 const imagesContainer = document.querySelector('.images');
+const previewsContainer = document.querySelector('.previews');
 
 for (let i = 0; i < images.length; i++){
     let divClasses = 'slider';
+    let previewClasses = 'preview';
 
     if (i == 0){
         divClasses += ' visible';
+        previewClasses += ' active';
     }
 
     imagesContainer.innerHTML +=  ` 
@@ -51,16 +54,37 @@ for (let i = 0; i < images.length; i++){
         </div>
     </div>
     `;
+
+    previewsContainer.innerHTML +=  ` 
+    <div class="${previewClasses}">
+        <img src="${images[i].url}" alt="">
+    </div>
+    `;
 };
 
 const allSliders = document.querySelectorAll('.slider');
+const allPreviews = document.querySelectorAll('.preview');
 
 let visibleSlider = 0;
+
+for (let i = 0; i < allPreviews.length; i++){
+    allPreviews[i].addEventListener('click', function(){
+        allSliders[visibleSlider].classList.remove('visible');
+        allPreviews[visibleSlider].classList.remove('active');
+
+        visibleSlider = i;
+
+        allSliders[visibleSlider].classList.add('visible');
+        allPreviews[visibleSlider].classList.add('active');
+
+    })
+}
 
 const prevButton = document.querySelector('.prev-button');
 
 prevButton.addEventListener('click', function(){
     allSliders[visibleSlider].classList.remove('visible');
+    allPreviews[visibleSlider].classList.remove('active');
 
     if (visibleSlider > 0){
         visibleSlider--;
@@ -69,12 +93,14 @@ prevButton.addEventListener('click', function(){
         visibleSlider = allSliders.length - 1;
     }
     allSliders[visibleSlider].classList.add ('visible');
+    allPreviews[visibleSlider].classList.add('active');
 });
 
 const nextButton = document.querySelector('.next-button');
 
 nextButton.addEventListener('click', function(){
     allSliders[visibleSlider].classList.remove('visible');
+    allPreviews[visibleSlider].classList.remove('active');
 
     if (visibleSlider < (allSliders.length - 1)){
         visibleSlider++;
@@ -83,5 +109,6 @@ nextButton.addEventListener('click', function(){
         visibleSlider = 0;
     }
     allSliders[visibleSlider].classList.add ('visible');
+    allPreviews[visibleSlider].classList.add('active');
 });
 
